@@ -22,7 +22,8 @@
     "@revsys/engines": "workspace:*",
     "@supabase/supabase-js": "^2.47.10",
     "recharts": "^2.15.0",
-    "lucide-react": "^0.469.0"
+    "lucide-react": "^0.469.0",
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",

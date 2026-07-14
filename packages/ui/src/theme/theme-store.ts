@@ -22,8 +22,10 @@ function applyResolvedTheme(resolved: ResolvedTheme): void {
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
-  theme: "system",
-  resolvedTheme: "light",
+  // Dark is the default Command Center experience; light is opt-in via the
+  // toggle rather than following the OS preference.
+  theme: "dark",
+  resolvedTheme: "dark",
   setTheme: (theme) => {
     const resolved = theme === "system" ? getSystemTheme() : theme;
     localStorage.setItem(THEME_STORAGE_KEY, theme);

@@ -78,6 +78,7 @@ export type Database = {
           subscription_tier?: SubscriptionTier;
           preferences?: Json;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       organizations: {
         Row: {
@@ -101,6 +102,7 @@ export type Database = {
           owner_id?: string;
           billing_email?: string | null;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       organization_members: {
         Row: {
@@ -121,6 +123,7 @@ export type Database = {
           merchant_id?: string;
           role?: MerchantRole;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       stores: {
         Row: {
@@ -153,6 +156,7 @@ export type Database = {
           industry?: string | null;
           shopify_connected?: boolean;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       revenue_scans: {
         Row: {
@@ -182,6 +186,7 @@ export type Database = {
           completed_at?: string | null;
           confidence?: number | null;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       revenue_reports: {
         Row: {
@@ -211,6 +216,7 @@ export type Database = {
           recovery_priority?: PriorityLevel | null;
           snapshot?: Json;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       revenue_health: {
         Row: {
@@ -234,6 +240,7 @@ export type Database = {
           category_scores?: Json;
           confidence?: number | null;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       revenue_leaks: {
         Row: {
@@ -275,6 +282,7 @@ export type Database = {
           confidence?: number | null;
           recovery_status?: RecoveryStatus;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       recommendations: {
         Row: {
@@ -310,6 +318,7 @@ export type Database = {
           supporting_evidence?: Json;
           implementation_status?: ImplementationStatus;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       recovery_plans: {
         Row: {
@@ -342,6 +351,7 @@ export type Database = {
           verified?: boolean;
           completed_at?: string | null;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       recovery_plan_tasks: {
         Row: {
@@ -368,6 +378,7 @@ export type Database = {
           status?: RecoveryPlanTaskStatus;
           sort_order?: number;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       integrations: {
         Row: {
@@ -394,6 +405,7 @@ export type Database = {
           connected_at?: string | null;
           metadata?: Json;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       notifications: {
         Row: {
@@ -423,6 +435,7 @@ export type Database = {
           read_at?: string | null;
           metadata?: Json;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
       ai_sessions: {
         Row: {
@@ -461,6 +474,7 @@ export type Database = {
           generated_outputs?: Json;
           audit_reference?: string | null;
         } & AuditColumnsUpdate;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

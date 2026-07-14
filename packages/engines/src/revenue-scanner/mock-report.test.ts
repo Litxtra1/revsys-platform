@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateMockRevenueReport, normalizeStoreUrl } from "./mock-report";
+import { generateMockRevenueReport, normalizeStoreUrl, REVENUE_CATEGORIES } from "./mock-report";
 
 describe("normalizeStoreUrl", () => {
   it("strips protocol, trailing slash, and casing differences", () => {
@@ -75,6 +75,27 @@ describe("generateMockRevenueReport", () => {
       expect(leakTitles.has(recommendation.relatedLeakTitle)).toBe(true);
       expect(recommendation.title.length).toBeGreaterThan(0);
       expect(recommendation.expectedOutcome).toMatch(/\$/);
+    }
+  });
+
+  it("every generated leak carries Command Center fields (difficulty, fix time, category, status)", () => {
+    const report = generateMockRevenueReport("command-center-store.myshopify.com");
+
+    for (const leak of report.leaks) {
+      expect(["easy", "medium", "hard"]).toContain(leak.difficulty);
+      expect(leak.estimatedFixMinutes).toBeGreaterThan(0);
+      expect(leak.recommendedAction.length).toBeGreaterThan(0);
+      expect(leak.recoveryStatus).toBe("unaddressed");
+      expect(REVENUE_CATEGORIES).toContain(leak.category);
+    }
+  });
+
+  it("scores every category, not just ones with a detected leak this scan", () => {
+    const report = generateMockRevenueReport("category-coverage-store.myshopify.com");
+
+    for (const category of REVENUE_CATEGORIES) {
+      expect(report.revenueHealth.categoryScores[category]).toBeGreaterThanOrEqual(0);
+      expect(report.revenueHealth.categoryScores[category]).toBeLessThanOrEqual(100);
     }
   });
 });

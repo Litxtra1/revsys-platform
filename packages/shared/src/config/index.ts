@@ -7,11 +7,10 @@ const publicConfigSchema = z.object({
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional().or(z.literal("")),
   /**
-   * Parent domain (e.g. ".revsys.ai") the Supabase auth cookie is scoped to,
-   * so a session started on the marketing app (apps/marketing) is also seen
-   * by the dashboard app (apps/web) on its own subdomain. Left unset in dev —
-   * an explicit Domain attribute isn't valid on localhost, so cookies stay
-   * host-only there, which is already correct for local development.
+   * Parent domain (e.g. ".revsys.ai") the Supabase auth cookie is scoped to.
+   * Left unset in dev — an explicit Domain attribute isn't valid on
+   * localhost, so cookies stay host-only there, which is already correct
+   * for local development.
    */
   AUTH_COOKIE_DOMAIN: z.string().optional(),
 });

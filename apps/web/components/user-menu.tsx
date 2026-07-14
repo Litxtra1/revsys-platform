@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@revsys/ui";
-import { signOutAction } from "../app/(auth)/actions";
+import { signOutAction } from "../lib/auth-actions";
 
 export function UserMenu({ email }: { email: string }) {
   return (

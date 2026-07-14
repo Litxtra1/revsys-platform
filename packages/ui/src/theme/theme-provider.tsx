@@ -11,7 +11,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     const initial: Theme =
-      stored === "light" || stored === "dark" || stored === "system" ? stored : "system";
+      stored === "light" || stored === "dark" || stored === "system" ? stored : "dark";
     setTheme(initial);
     // Runs once on mount to hydrate the store from localStorage; setTheme is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps

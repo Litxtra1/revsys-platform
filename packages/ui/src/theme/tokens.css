@@ -116,6 +116,16 @@
   --ink-2: var(--color-neutral-700);
   --ink-3: var(--muted-foreground);
   --ink-4: var(--color-neutral-400);
+
+  /*
+   * Revenue Command Center vocabulary (Book XIII's palette, named the way
+   * the product brief calls for it): emerald = revenue, coral = critical.
+   * Same hues as --revenue/--critical above, not a new palette.
+   */
+  --emerald: var(--revenue);
+  --emerald-foreground: var(--revenue-foreground);
+  --coral: var(--critical);
+  --coral-foreground: var(--destructive-foreground);
 }
 
 .dark {
@@ -174,6 +184,11 @@
   --ink-2: var(--color-neutral-300);
   --ink-3: var(--muted-foreground);
   --ink-4: var(--color-neutral-600);
+
+  --emerald: var(--revenue);
+  --emerald-foreground: var(--revenue-foreground);
+  --coral: var(--critical);
+  --coral-foreground: var(--destructive-foreground);
 }
 
 /* Remap semantic tokens into Tailwind's color namespace (bg-primary, text-foreground, etc). */
@@ -218,6 +233,11 @@
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
   --color-ink-4: var(--ink-4);
+
+  --color-emerald: var(--emerald);
+  --color-emerald-foreground: var(--emerald-foreground);
+  --color-coral: var(--coral);
+  --color-coral-foreground: var(--coral-foreground);
 }
 
 @utility glass-surface {

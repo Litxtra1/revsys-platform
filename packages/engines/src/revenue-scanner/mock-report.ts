@@ -7,11 +7,34 @@
  */
 
 export type LeakSeverity = "low" | "medium" | "high" | "critical";
+export type LeakDifficulty = "easy" | "medium" | "hard";
+export type LeakRecoveryStatus = "unaddressed" | "in_progress" | "recovered" | "dismissed";
+
+/**
+ * Fixed taxonomy for the Revenue Command Center's category navigation.
+ * Every LEAK_CATALOG entry's `category` must be one of these.
+ */
+export const REVENUE_CATEGORIES = [
+  "Conversion",
+  "Trust Signals",
+  "Checkout",
+  "Mobile Experience",
+  "Product Pages",
+  "Collections",
+  "SEO",
+  "Retention",
+  "Speed",
+  "Analytics",
+  "Pricing",
+  "Customer Journey",
+] as const;
+
+export type RevenueCategory = (typeof REVENUE_CATEGORIES)[number];
 
 export interface MockRevenueLeak {
   id: string;
   catalogId: string;
-  category: string;
+  category: RevenueCategory;
   title: string;
   description: string;
   severity: LeakSeverity;
@@ -19,6 +42,10 @@ export interface MockRevenueLeak {
   estimatedImpactLow: number;
   estimatedImpactHigh: number;
   confidence: number;
+  difficulty: LeakDifficulty;
+  estimatedFixMinutes: number;
+  recommendedAction: string;
+  recoveryStatus: LeakRecoveryStatus;
 }
 
 export interface MockRevenueHealth {
@@ -58,19 +85,21 @@ export interface MockRevenueReport {
   businessImpactSummary: string;
 }
 
-interface LeakCatalogEntry {
+export interface LeakCatalogEntry {
   catalogId: string;
-  category: string;
+  category: RevenueCategory;
   title: string;
   description: string;
   evidence: string[];
   recommendedAction: string;
+  difficulty: LeakDifficulty;
+  estimatedFixMinutes: number;
 }
 
 const LEAK_CATALOG: LeakCatalogEntry[] = [
   {
     catalogId: "checkout-friction",
-    category: "Checkout Experience",
+    category: "Checkout",
     title: "Complex Checkout Flow",
     description:
       "Multiple unnecessary steps and form fields are increasing cart abandonment during checkout.",
@@ -79,6 +108,21 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
       "No guest checkout option detected",
     ],
     recommendedAction: "Cut checkout down to two steps and add guest checkout.",
+    difficulty: "hard",
+    estimatedFixMinutes: 240,
+  },
+  {
+    catalogId: "cart-abandonment",
+    category: "Checkout",
+    title: "High Cart Abandonment Signals",
+    description: "Store shows patterns consistent with elevated cart abandonment.",
+    evidence: [
+      "No cart recovery messaging detected",
+      "Shipping costs not shown until final checkout step",
+    ],
+    recommendedAction: "Show shipping costs earlier and add cart recovery messaging.",
+    difficulty: "medium",
+    estimatedFixMinutes: 45,
   },
   {
     catalogId: "mobile-experience",
@@ -90,10 +134,12 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
       "Mobile page weight exceeds best-practice thresholds",
     ],
     recommendedAction: "Resize tap targets and compress mobile page assets.",
+    difficulty: "medium",
+    estimatedFixMinutes: 90,
   },
   {
     catalogId: "trust-signals",
-    category: "Trust & Credibility",
+    category: "Trust Signals",
     title: "Missing Trust Signals",
     description:
       "Key trust indicators are missing from product and checkout pages, reducing purchase confidence.",
@@ -102,10 +148,26 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
       "Limited customer reviews displayed on product pages",
     ],
     recommendedAction: "Add security badges and visible reviews near the buy button.",
+    difficulty: "easy",
+    estimatedFixMinutes: 20,
+  },
+  {
+    catalogId: "social-proof",
+    category: "Trust Signals",
+    title: "Missing Customer Reviews",
+    description:
+      "Customers hesitate before purchasing products that have little or no social proof.",
+    evidence: [
+      "Most products contain no customer reviews",
+      "No user-generated content on key pages",
+    ],
+    recommendedAction: "Add a reviews widget and highlight customer photos on key product pages.",
+    difficulty: "easy",
+    estimatedFixMinutes: 20,
   },
   {
     catalogId: "product-messaging",
-    category: "Product Messaging",
+    category: "Product Pages",
     title: "Unclear Value Proposition",
     description: "Product pages do not clearly communicate why a visitor should buy now.",
     evidence: [
@@ -113,10 +175,53 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
       "No urgency or scarcity messaging detected",
     ],
     recommendedAction: "Rewrite product copy around outcomes, not just features.",
+    difficulty: "medium",
+    estimatedFixMinutes: 60,
+  },
+  {
+    catalogId: "collection-organization",
+    category: "Collections",
+    title: "Poorly Organized Collections",
+    description:
+      "Product collections are hard to browse, making it difficult for shoppers to find what they want.",
+    evidence: [
+      "No filtering or sorting options on collection pages",
+      "Collections mix unrelated product types",
+    ],
+    recommendedAction: "Add filters and sort options, and split mixed collections by product type.",
+    difficulty: "medium",
+    estimatedFixMinutes: 45,
+  },
+  {
+    catalogId: "technical-seo",
+    category: "SEO",
+    title: "Technical SEO Gaps",
+    description: "Search visibility may be constrained by technical SEO issues.",
+    evidence: [
+      "Missing structured data on product pages",
+      "Meta descriptions missing on key pages",
+    ],
+    recommendedAction: "Add structured data and fill in missing meta descriptions.",
+    difficulty: "medium",
+    estimatedFixMinutes: 90,
+  },
+  {
+    catalogId: "retention-gap",
+    category: "Retention",
+    title: "No Post-Purchase Retention Flow",
+    description:
+      "Customers aren't hearing from you again after their first purchase, leaving repeat-purchase revenue on the table.",
+    evidence: [
+      "No post-purchase email flow detected",
+      "No loyalty or rewards program visible",
+    ],
+    recommendedAction: "Set up a post-purchase email flow and a simple loyalty incentive.",
+    difficulty: "hard",
+    estimatedFixMinutes: 180,
   },
   {
     catalogId: "page-speed",
-    category: "Technical Performance",
+    category: "Speed",
     title: "Slow Page Load Times",
     description:
       "Page load speed is likely costing conversions, particularly on product and collection pages.",
@@ -125,55 +230,86 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
       "Unoptimized image assets detected",
     ],
     recommendedAction: "Compress images and remove unnecessary third-party scripts.",
+    difficulty: "hard",
+    estimatedFixMinutes: 120,
   },
   {
-    catalogId: "cart-abandonment",
-    category: "Cart & Checkout",
-    title: "High Cart Abandonment Signals",
-    description: "Store shows patterns consistent with elevated cart abandonment.",
-    evidence: [
-      "No cart recovery messaging detected",
-      "Shipping costs not shown until final checkout step",
-    ],
-    recommendedAction: "Show shipping costs earlier and add cart recovery messaging.",
-  },
-  {
-    catalogId: "technical-seo",
-    category: "Discoverability",
-    title: "Technical SEO Gaps",
-    description: "Search visibility may be constrained by technical SEO issues.",
-    evidence: [
-      "Missing structured data on product pages",
-      "Meta descriptions missing on key pages",
-    ],
-    recommendedAction: "Add structured data and fill in missing meta descriptions.",
-  },
-  {
-    catalogId: "navigation",
-    category: "Site Navigation",
-    title: "Navigation Friction",
-    description: "Store navigation may make it harder for visitors to find relevant products.",
-    evidence: ["Deep category nesting detected", "No visible search bar in primary navigation"],
-    recommendedAction: "Flatten your category structure and add a visible search bar.",
-  },
-  {
-    catalogId: "social-proof",
-    category: "Trust & Credibility",
-    title: "Insufficient Social Proof",
+    catalogId: "analytics-blindspot",
+    category: "Analytics",
+    title: "Incomplete Conversion Tracking",
     description:
-      "Limited visible evidence of other customers' satisfaction may be reducing buyer confidence.",
-    evidence: ["Review counts below category benchmark", "No user-generated content on key pages"],
-    recommendedAction: "Highlight customer reviews and photos on key product pages.",
+      "Key customer actions aren't being tracked, making it hard to know what's actually driving (or losing) revenue.",
+    evidence: [
+      "Checkout funnel steps not instrumented",
+      "No UTM tracking on marketing links",
+    ],
+    recommendedAction: "Instrument checkout funnel events and tag campaign links with UTM parameters.",
+    difficulty: "medium",
+    estimatedFixMinutes: 90,
   },
   {
     catalogId: "upsell-opportunity",
-    category: "Average Order Value",
+    category: "Pricing",
     title: "Missed Upsell Opportunities",
     description: "Store is not surfacing complementary products at key decision points.",
     evidence: ["No cross-sell recommendations on product pages", "No cart-level upsell prompts"],
     recommendedAction: "Add cross-sell suggestions on product pages and at checkout.",
+    difficulty: "easy",
+    estimatedFixMinutes: 30,
+  },
+  {
+    catalogId: "navigation",
+    category: "Customer Journey",
+    title: "Navigation Friction",
+    description: "Store navigation may make it harder for visitors to find relevant products.",
+    evidence: ["Deep category nesting detected", "No visible search bar in primary navigation"],
+    recommendedAction: "Flatten your category structure and add a visible search bar.",
+    difficulty: "medium",
+    estimatedFixMinutes: 60,
+  },
+  {
+    catalogId: "journey-friction",
+    category: "Customer Journey",
+    title: "Confusing Path From Discovery to Purchase",
+    description: "Shoppers take a winding path to purchase, with unclear next steps at each stage.",
+    evidence: [
+      "No clear next-step prompts on category or product pages",
+      "Multiple competing calls-to-action per page",
+    ],
+    recommendedAction: "Simplify each page to one clear next step toward purchase.",
+    difficulty: "hard",
+    estimatedFixMinutes: 150,
+  },
+  {
+    catalogId: "conversion-friction",
+    category: "Conversion",
+    title: "Low-Intent Traffic Not Converting",
+    description:
+      "Visitors are landing on your site but not moving toward a purchase decision.",
+    evidence: [
+      "Add-to-cart rate below category benchmark",
+      "High bounce rate on landing pages",
+    ],
+    recommendedAction:
+      "Add clearer calls-to-action and simplify the path from landing page to cart.",
+    difficulty: "medium",
+    estimatedFixMinutes: 60,
   },
 ];
+
+/**
+ * Static catalog text (title/description/recommended action) by catalog ID.
+ * DB rows in `revenue_leaks` only persist `leak_catalog_id` plus per-scan
+ * numbers (severity/impact/confidence/status) — this is how a reader joins
+ * a persisted leak row back to its display copy.
+ */
+export function getLeakCatalogEntry(catalogId: string): LeakCatalogEntry | undefined {
+  return LEAK_CATALOG.find((entry) => entry.catalogId === catalogId);
+}
+
+export function getAllLeakCatalogEntries(): readonly LeakCatalogEntry[] {
+  return LEAK_CATALOG;
+}
 
 const SEVERITIES: LeakSeverity[] = ["low", "medium", "high", "critical"];
 
@@ -259,6 +395,10 @@ export function generateMockRevenueReport(storeUrl: string): MockRevenueReport {
       estimatedImpactLow: impactLow,
       estimatedImpactHigh: impactHigh,
       confidence: Math.round(60 + random() * 30),
+      difficulty: entry.difficulty,
+      estimatedFixMinutes: entry.estimatedFixMinutes,
+      recommendedAction: entry.recommendedAction,
+      recoveryStatus: "unaddressed",
     };
   });
 
@@ -278,27 +418,27 @@ export function generateMockRevenueReport(storeUrl: string): MockRevenueReport {
     Math.min(92, Math.round(88 - criticalCount * 12 - highCount * 6 - leaks.length * 2))
   );
 
-  const categoryScores: Record<string, number> = {
-    "Checkout Experience": Math.round(50 + random() * 45),
-    "Mobile Experience": Math.round(50 + random() * 45),
-    "Trust & Credibility": Math.round(50 + random() * 45),
-    "Technical Performance": Math.round(50 + random() * 45),
-    Discoverability: Math.round(50 + random() * 45),
-  };
+  // Every category gets a score, not just the ones with generated leaks this
+  // scan — categories without a detected leak this run still show as healthy.
+  const categoryScores: Record<string, number> = {};
+  for (const category of REVENUE_CATEGORIES) {
+    const categoryLeaks = leaks.filter((leak) => leak.category === category);
+    categoryScores[category] =
+      categoryLeaks.length === 0
+        ? Math.round(80 + random() * 15)
+        : Math.max(30, Math.round(85 - categoryLeaks.length * 15 - random() * 10));
+  }
 
   const topOpportunities = sortedBySeverity.slice(0, 3).map((leak) => leak.title);
 
   const recommendations: MockRecommendation[] = sortedBySeverity
     .slice(0, Math.min(4, sortedBySeverity.length))
-    .map((leak) => {
-      const catalogEntry = LEAK_CATALOG.find((entry) => entry.catalogId === leak.catalogId);
-      return {
-        title: catalogEntry?.recommendedAction ?? "Review this finding with your team.",
-        relatedLeakTitle: leak.title,
-        priority: leak.severity,
-        expectedOutcome: `Could recover ${formatUsd(leak.estimatedImpactLow)}–${formatUsd(leak.estimatedImpactHigh)}/mo`,
-      };
-    });
+    .map((leak) => ({
+      title: leak.recommendedAction,
+      relatedLeakTitle: leak.title,
+      priority: leak.severity,
+      expectedOutcome: `Could recover ${formatUsd(leak.estimatedImpactLow)}–${formatUsd(leak.estimatedImpactHigh)}/mo`,
+    }));
 
   return {
     scanId: `scan-${seed.toString(36)}`,

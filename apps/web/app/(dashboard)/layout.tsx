@@ -3,6 +3,7 @@ import { createServerSupabaseClient, getCurrentUser } from "@revsys/services";
 import { getPublicConfig } from "@revsys/shared";
 import { Sidebar } from "../../components/sidebar";
 import { Header } from "../../components/header";
+import { computeCategorySummaries, getLatestReport, getMerchantStore } from "../../lib/dashboard-data";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const config = getPublicConfig();
@@ -17,9 +18,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect("/login");
   }
 
+  const store = await getMerchantStore(user.id);
+  const report = store ? await getLatestReport(store) : null;
+  const categorySummaries = computeCategorySummaries(report?.leaks ?? []);
+
   return (
     <div className="flex min-h-dvh">
-      <Sidebar />
+      <Sidebar categories={categorySummaries} />
       <div className="flex flex-1 flex-col">
         <Header email={user.email ?? ""} />
         <main className="flex-1 p-6">{children}</main>
