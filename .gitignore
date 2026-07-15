@@ -12,6 +12,9 @@ out/
 # Turborepo
 .turbo/
 
+# Vercel
+.vercel/
+
 # Environment
 .env
 .env.local
