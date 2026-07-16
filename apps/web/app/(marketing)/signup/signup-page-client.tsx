@@ -15,7 +15,6 @@ export function SignupPageClient() {
       title="Find your first leak in 90 seconds."
       lede="Create your Mission Control. Connect Shopify. Get a consulting-grade Revenue Report — free."
       submitLabel="Create my Mission Control"
-      showStore
       onSubmit={async ({ email, password }) => {
         const result = await signUpAction(email, password);
         if (!result.error) {

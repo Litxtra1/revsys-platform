@@ -297,6 +297,10 @@
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+@keyframes revsys-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 
 @utility revsys-fade-in {
   animation: revsys-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -309,6 +313,9 @@
 }
 @utility revsys-ping {
   animation: revsys-ping-soft 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@utility revsys-orbit {
+  animation: revsys-orbit 5s linear infinite;
 }
 @utility revsys-count-in {
   animation: revsys-count-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;

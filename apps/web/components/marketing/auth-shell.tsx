@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useTransition, type ReactNode } from "react";
+import { resolveShopifyDomainAction } from "../../lib/shopify-actions";
 import { RevsysMark } from "./shared";
 
 export function AuthShell({
@@ -9,7 +10,6 @@ export function AuthShell({
   lede,
   submitLabel,
   footer,
-  showStore = false,
   notice,
   initialError,
   onSubmit,
@@ -19,7 +19,6 @@ export function AuthShell({
   lede: string;
   submitLabel: string;
   footer: ReactNode;
-  showStore?: boolean;
   notice?: string | undefined;
   initialError?: string | null;
   onSubmit: (input: { email: string; password: string; store: string }) => Promise<{ error?: string } | void>;
@@ -29,6 +28,8 @@ export function AuthShell({
   const [store, setStore] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
+  const [shopifyError, setShopifyError] = useState<string | null>(null);
+  const [resolvingShopify, startShopifyResolve] = useTransition();
 
   return (
     <section className="relative overflow-hidden px-6 py-20 md:py-28">
@@ -89,15 +90,13 @@ export function AuthShell({
               }}
               className="mt-8 space-y-4"
             >
-              {showStore ? (
-                <Field
-                  label="Your Shopify store"
-                  type="text"
-                  placeholder="yourstore.myshopify.com"
-                  value={store}
-                  onChange={setStore}
-                />
-              ) : null}
+              <Field
+                label="Your store's URL"
+                type="text"
+                placeholder="yourstore.com"
+                value={store}
+                onChange={setStore}
+              />
               <Field
                 label="Work email"
                 type="email"
@@ -135,25 +134,24 @@ export function AuthShell({
 
               <button
                 type="button"
+                disabled={resolvingShopify}
                 onClick={() => {
-                  const raw =
-                    store.trim() ||
-                    window.prompt("Your Shopify store domain (e.g. yourstore.myshopify.com)") ||
-                    "";
-                  const cleaned = raw
-                    .trim()
-                    .toLowerCase()
-                    .replace(/^https?:\/\//, "")
-                    .replace(/\/$/, "");
-                  if (!cleaned) return;
-                  const shop = cleaned.endsWith(".myshopify.com") ? cleaned : `${cleaned}.myshopify.com`;
-                  window.location.href = `/auth/shopify/start?shop=${encodeURIComponent(shop)}`;
+                  setShopifyError(null);
+                  startShopifyResolve(async () => {
+                    const result = await resolveShopifyDomainAction(store);
+                    if ("error" in result) {
+                      setShopifyError(result.error);
+                      return;
+                    }
+                    window.location.href = `/auth/shopify/start?shop=${encodeURIComponent(result.shop)}`;
+                  });
                 }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-hairline bg-background px-5 py-3 text-[13.5px] font-medium text-ink-1 transition-all hover:border-ink-2"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-hairline bg-background px-5 py-3 text-[13.5px] font-medium text-ink-1 transition-all hover:border-ink-2 disabled:opacity-70"
               >
                 <ShopifyGlyphSmall />
-                Continue with Shopify
+                {resolvingShopify ? "Connecting…" : "Continue with Shopify"}
               </button>
+              {shopifyError ? <p className="text-[12.5px] text-critical">{shopifyError}</p> : null}
             </form>
 
             <p className="mt-8 border-t border-hairline pt-5 text-[12.5px] text-ink-3">{footer}</p>

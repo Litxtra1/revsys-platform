@@ -219,7 +219,7 @@ const NAV_LINKS = [
   { to: "/scanner", label: "Scanner" },
   { to: "/products", label: "Products" },
   { to: "/calculator", label: "Calculator" },
-  { to: "/demo", label: "Demo" },
+  { to: "/case-studies", label: "Case Studies" },
   { to: "/pricing", label: "Pricing" },
 ] as const;
 
@@ -401,7 +401,7 @@ export function SiteFooter() {
             ["Revenue Scanner", "/scanner"],
             ["Products", "/products"],
             ["Calculator", "/calculator"],
-            ["Interactive Demo", "/demo"],
+            ["Case Studies", "/case-studies"],
           ]}
         />
         <FooterCol

@@ -1,5 +1,6 @@
 import { Button } from "@revsys/ui";
 import { Plug } from "lucide-react";
+import { ConnectShopifyDialog } from "./connect-shopify-dialog";
 
 export function EmptyStateConnectStore() {
   return (
@@ -12,9 +13,7 @@ export function EmptyStateConnectStore() {
         Connect Shopify to run your first scan and start seeing exactly where your store is
         leaking revenue.
       </p>
-      <Button asChild size="lg" className="mt-6">
-        <a href="/auth/shopify/start">Connect Shopify</a>
-      </Button>
+      <ConnectShopifyDialog trigger={<Button size="lg" className="mt-6">Connect Shopify</Button>} />
     </div>
   );
 }

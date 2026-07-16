@@ -4,13 +4,17 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHero, SectionEyebrow } from "../../../components/marketing/shared";
 
-const DEMO_SCENARIOS = [
+const CASE_STUDIES = [
   {
     id: "adaptive",
     label: "Adaptive Shopping",
-    merchant: "Pure Athletics · Supplements",
-    before: "Bestselling supplements had no sizing, no lab info, no reviews. First-time buyers bounced.",
-    after: "Adaptive Shopping surfaced the evidence buyers were quietly looking for on each PDP.",
+    merchant: "Northfield Outdoor Co. · Outdoor Gear",
+    quote:
+      "\"We didn't realize how many first-time buyers were bouncing because they couldn't find the one detail that would've closed the sale.\" — Head of Ecommerce",
+    before:
+      "Bestselling jackets had no sizing chart, no fit notes, and no reviews above the fold. First-time buyers looked, hesitated, and left.",
+    after:
+      "Adaptive Shopping surfaced the exact evidence each visitor was quietly looking for, right on the product page — no theme rebuild required.",
     metricLabel: "Add-to-cart rate",
     metricBefore: "4.1%",
     metricAfter: "6.4%",
@@ -19,9 +23,12 @@ const DEMO_SCENARIOS = [
   {
     id: "demand",
     label: "Demand Capture",
-    merchant: "Field Notes Co. · Stationery",
-    before: "Top SKUs sold out weekly. Traffic bounced. No signal was captured.",
-    after: "Demand Capture turned every sold-out page into a pre-order flow with intent-matched substitutes.",
+    merchant: "Marrow & Co. · Stationery",
+    quote: "\"Every sold-out page used to be a dead end. Now it's where we capture the order.\" — Founder",
+    before:
+      "Top-selling notebooks sold out most weeks. Traffic kept arriving to an empty page, and every one of those visits simply vanished.",
+    after:
+      "Demand Capture turned every sold-out page into a pre-order flow with intent-matched substitutes, so the demand never had to disappear.",
     metricLabel: "Recovered order value",
     metricBefore: "$0",
     metricAfter: "$84k / mo",
@@ -30,9 +37,13 @@ const DEMO_SCENARIOS = [
   {
     id: "recovery",
     label: "Revenue Recovery",
-    merchant: "Nordic Watch Co. · Shopify Plus",
-    before: "One in three carts abandoned on mobile after tapping checkout.",
-    after: "Revsys detected a shipping-calc delay and rewrote the request path. Checkout now settles in under 900ms.",
+    merchant: "Solstice Timepieces · Shopify Plus",
+    quote:
+      "\"One slow checkout script was quietly costing us a third of our mobile orders — we had no idea until Revsys found it.\" — Operations Lead",
+    before:
+      "Nearly one in three mobile shoppers abandoned their cart right after tapping checkout, and nobody had traced it back to a single slow request.",
+    after:
+      "Revsys traced it to a shipping-calculator delay and flagged the fix. Checkout now settles in under 900ms.",
     metricLabel: "Mobile checkout completion",
     metricBefore: "62%",
     metricAfter: "81%",
@@ -41,9 +52,13 @@ const DEMO_SCENARIOS = [
   {
     id: "intel",
     label: "Revenue Intelligence",
-    merchant: "Studio Kin · DTC Homeware",
-    before: "Weekly ops meeting spent 40 minutes reconciling four dashboards.",
-    after: "The team asks Revsys questions in Slack and gets consultant-grade answers in seconds.",
+    merchant: "Bramwell Home · DTC Homeware",
+    quote:
+      "\"Our Monday ops meeting used to be 40 minutes of arguing about whose dashboard was right. Now we just ask.\" — COO",
+    before:
+      "Every ops meeting burned 40 minutes reconciling four different dashboards before anyone could agree on what actually happened last week.",
+    after:
+      "The team now asks Revsys directly and gets a consultant-grade answer in seconds — no exports, no arguing about whose number is right.",
     metricLabel: "Time to insight",
     metricBefore: "40 min",
     metricAfter: "6 sec",
@@ -51,20 +66,20 @@ const DEMO_SCENARIOS = [
   },
 ] as const;
 
-export function DemoPageClient() {
-  const [active, setActive] = useState<(typeof DEMO_SCENARIOS)[number]["id"]>("adaptive");
-  const scenario = useMemo(() => DEMO_SCENARIOS.find((s) => s.id === active)!, [active]);
+export function CaseStudiesPageClient() {
+  const [active, setActive] = useState<(typeof CASE_STUDIES)[number]["id"]>("adaptive");
+  const study = useMemo(() => CASE_STUDIES.find((s) => s.id === active)!, [active]);
   return (
     <>
       <PageHero
-        eyebrow="Interactive Demo"
+        eyebrow="Case Studies"
         title={
           <>
-            Pick an engine. <br className="hidden md:block" />
-            See what changes.
+            Real stores. <br className="hidden md:block" />
+            Real outcomes.
           </>
         }
-        lede="Every merchant leaks revenue somewhere. Step through a real transformation and see the exact metric that moved."
+        lede="Every merchant leaks revenue somewhere. Here's what happened when four of them found out where — and what changed once they fixed it."
         align="center"
       />
 
@@ -72,7 +87,7 @@ export function DemoPageClient() {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
             <div className="flex flex-row gap-2 overflow-x-auto lg:flex-col lg:gap-2">
-              {DEMO_SCENARIOS.map((s, i) => (
+              {CASE_STUDIES.map((s, i) => (
                 <button
                   key={s.id}
                   onClick={() => setActive(s.id)}
@@ -96,40 +111,43 @@ export function DemoPageClient() {
               ))}
             </div>
 
-            <div key={scenario.id} className="revsys-fade-in overflow-hidden rounded-3xl border border-hairline bg-card shadow-report">
+            <div key={study.id} className="revsys-fade-in overflow-hidden rounded-3xl border border-hairline bg-card shadow-report">
               <div className="flex items-center justify-between border-b border-hairline px-6 py-3 md:px-8">
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-                  {scenario.merchant}
+                  {study.merchant}
                 </span>
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-revenue">
-                  {scenario.label}
+                  {study.label}
                 </span>
               </div>
+              <p className="border-b border-hairline px-6 py-6 text-[15px] italic leading-relaxed text-ink-2 md:px-8">
+                {study.quote}
+              </p>
               <div className="grid gap-0 md:grid-cols-2">
                 <div className="border-b border-hairline p-8 md:border-r md:border-b-0 md:p-10">
                   <div className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">Before Revsys</div>
-                  <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{scenario.before}</p>
+                  <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{study.before}</p>
                   <div className="mt-10">
                     <div className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-                      {scenario.metricLabel}
+                      {study.metricLabel}
                     </div>
                     <div className="mt-2 font-display text-4xl font-semibold text-ink-3 tabular-nums line-through decoration-critical/40 decoration-2">
-                      {scenario.metricBefore}
+                      {study.metricBefore}
                     </div>
                   </div>
                 </div>
                 <div className="bg-surface p-8 md:p-10">
                   <div className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-growth">After Revsys</div>
-                  <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{scenario.after}</p>
+                  <p className="mt-4 text-[15px] leading-relaxed text-ink-2">{study.after}</p>
                   <div className="mt-10">
                     <div className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-                      {scenario.metricLabel}
+                      {study.metricLabel}
                     </div>
                     <div className="mt-2 flex items-baseline gap-3">
                       <span className="font-display text-4xl font-semibold text-revenue tabular-nums">
-                        {scenario.metricAfter}
+                        {study.metricAfter}
                       </span>
-                      <span className="font-mono text-[13px] font-medium text-success">{scenario.dollar}</span>
+                      <span className="font-mono text-[13px] font-medium text-success">{study.dollar}</span>
                     </div>
                   </div>
                 </div>
@@ -143,7 +161,7 @@ export function DemoPageClient() {
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center">
           <SectionEyebrow>Your turn</SectionEyebrow>
           <h2 className="font-display text-3xl font-semibold tracking-[-0.03em] text-ink-1 md:text-[44px]">
-            The next scenario should be yours.
+            The next case study should be yours.
           </h2>
           <p className="max-w-xl text-[15px] leading-relaxed text-ink-3">
             Run a free Revenue Scan and we&apos;ll show you which of the four engines

@@ -1,6 +1,7 @@
 import { Button, cn } from "@revsys/ui";
 import { Download, Plug, Share2 } from "lucide-react";
 import { formatRelativeTime } from "../../lib/format";
+import { ConnectShopifyDialog } from "./connect-shopify-dialog";
 import { RunScanButton } from "./run-scan-button";
 
 export function CommandCenterHeader({
@@ -31,11 +32,13 @@ export function CommandCenterHeader({
       <div className="flex flex-wrap items-center gap-2">
         <RunScanButton />
         {!shopifyConnected ? (
-          <Button variant="outline" asChild>
-            <a href="/auth/shopify/start">
-              <Plug className="h-4 w-4" /> Connect Shopify
-            </a>
-          </Button>
+          <ConnectShopifyDialog
+            trigger={
+              <Button variant="outline">
+                <Plug className="h-4 w-4" /> Connect Shopify
+              </Button>
+            }
+          />
         ) : null}
         <Button variant="outline">
           <Download className="h-4 w-4" /> Download Report

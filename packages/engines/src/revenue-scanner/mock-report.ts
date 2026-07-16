@@ -102,7 +102,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Checkout",
     title: "Complex Checkout Flow",
     description:
-      "Multiple unnecessary steps and form fields are increasing cart abandonment during checkout.",
+      "Every extra step in your checkout is a door your customers can walk out of — and right now, yours has too many of them.",
     evidence: [
       "Checkout requires more than 4 steps to complete",
       "No guest checkout option detected",
@@ -115,7 +115,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "cart-abandonment",
     category: "Checkout",
     title: "High Cart Abandonment Signals",
-    description: "Store shows patterns consistent with elevated cart abandonment.",
+    description:
+      "Shoppers are filling carts and leaving anyway — a quiet pattern that compounds into real lost revenue every single day it goes unaddressed.",
     evidence: [
       "No cart recovery messaging detected",
       "Shipping costs not shown until final checkout step",
@@ -128,7 +129,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "mobile-experience",
     category: "Mobile Experience",
     title: "Mobile Conversion Gaps",
-    description: "Mobile visitors convert at a meaningfully lower rate than desktop visitors.",
+    description:
+      "Most of your traffic is on mobile, and it's converting meaningfully worse than desktop — meaning the majority of your visitors are getting the worse experience.",
     evidence: [
       "Tap targets below recommended size on product pages",
       "Mobile page weight exceeds best-practice thresholds",
@@ -142,7 +144,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Trust Signals",
     title: "Missing Trust Signals",
     description:
-      "Key trust indicators are missing from product and checkout pages, reducing purchase confidence.",
+      "Without visible proof that buying from you is safe, hesitant shoppers default to the safest option they have: leaving without buying.",
     evidence: [
       "No visible security badges at checkout",
       "Limited customer reviews displayed on product pages",
@@ -156,7 +158,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Trust Signals",
     title: "Missing Customer Reviews",
     description:
-      "Customers hesitate before purchasing products that have little or no social proof.",
+      "No reviews means no proof — and shoppers who can't find proof that others bought and were happy rarely want to be first.",
     evidence: [
       "Most products contain no customer reviews",
       "No user-generated content on key pages",
@@ -169,7 +171,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "product-messaging",
     category: "Product Pages",
     title: "Unclear Value Proposition",
-    description: "Product pages do not clearly communicate why a visitor should buy now.",
+    description:
+      "If a visitor can't tell why they should buy today, they assume they can decide later — and later usually means never.",
     evidence: [
       "Product descriptions lack benefit-driven language",
       "No urgency or scarcity messaging detected",
@@ -183,7 +186,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Collections",
     title: "Poorly Organized Collections",
     description:
-      "Product collections are hard to browse, making it difficult for shoppers to find what they want.",
+      "Shoppers who can't quickly find what they want don't ask for help — they just leave for a store that makes it easier.",
     evidence: [
       "No filtering or sorting options on collection pages",
       "Collections mix unrelated product types",
@@ -196,7 +199,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "technical-seo",
     category: "SEO",
     title: "Technical SEO Gaps",
-    description: "Search visibility may be constrained by technical SEO issues.",
+    description:
+      "Every day these gaps go unfixed is another day your store stays invisible to shoppers who are already searching for exactly what you sell.",
     evidence: [
       "Missing structured data on product pages",
       "Meta descriptions missing on key pages",
@@ -210,7 +214,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Retention",
     title: "No Post-Purchase Retention Flow",
     description:
-      "Customers aren't hearing from you again after their first purchase, leaving repeat-purchase revenue on the table.",
+      "Your best customers — the ones who already bought once — are walking away silently, because nothing is bringing them back.",
     evidence: [
       "No post-purchase email flow detected",
       "No loyalty or rewards program visible",
@@ -224,7 +228,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Speed",
     title: "Slow Page Load Times",
     description:
-      "Page load speed is likely costing conversions, particularly on product and collection pages.",
+      "Every extra second your pages take to load is a shopper deciding whether you're worth waiting for — and most decide you're not.",
     evidence: [
       "Largest Contentful Paint above recommended threshold",
       "Unoptimized image assets detected",
@@ -238,7 +242,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Analytics",
     title: "Incomplete Conversion Tracking",
     description:
-      "Key customer actions aren't being tracked, making it hard to know what's actually driving (or losing) revenue.",
+      "You can't fix what you can't see — and right now, key moments in your funnel are invisible to you.",
     evidence: [
       "Checkout funnel steps not instrumented",
       "No UTM tracking on marketing links",
@@ -251,7 +255,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "upsell-opportunity",
     category: "Pricing",
     title: "Missed Upsell Opportunities",
-    description: "Store is not surfacing complementary products at key decision points.",
+    description:
+      "Customers who are already buying are the easiest people on earth to sell more to — and right now, you're not even asking.",
     evidence: ["No cross-sell recommendations on product pages", "No cart-level upsell prompts"],
     recommendedAction: "Add cross-sell suggestions on product pages and at checkout.",
     difficulty: "easy",
@@ -261,7 +266,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "navigation",
     category: "Customer Journey",
     title: "Navigation Friction",
-    description: "Store navigation may make it harder for visitors to find relevant products.",
+    description: "When shoppers can't find their way to what they want, they don't wander — they leave.",
     evidence: ["Deep category nesting detected", "No visible search bar in primary navigation"],
     recommendedAction: "Flatten your category structure and add a visible search bar.",
     difficulty: "medium",
@@ -271,7 +276,8 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     catalogId: "journey-friction",
     category: "Customer Journey",
     title: "Confusing Path From Discovery to Purchase",
-    description: "Shoppers take a winding path to purchase, with unclear next steps at each stage.",
+    description:
+      "Every unclear next step is a moment a shopper can decide to stop — and a confusing journey gives them that moment again and again.",
     evidence: [
       "No clear next-step prompts on category or product pages",
       "Multiple competing calls-to-action per page",
@@ -285,7 +291,7 @@ const LEAK_CATALOG: LeakCatalogEntry[] = [
     category: "Conversion",
     title: "Low-Intent Traffic Not Converting",
     description:
-      "Visitors are landing on your site but not moving toward a purchase decision.",
+      "Traffic without a nudge to act just drifts back out the way it came in — and that's exactly what's happening here, visit after visit.",
     evidence: [
       "Add-to-cart rate below category benchmark",
       "High bounce rate on landing pages",
@@ -462,6 +468,6 @@ export function generateMockRevenueReport(storeUrl: string): MockRevenueReport {
       "Connect your Shopify store for a deeper, store-specific report.",
       "Talk to our team about a free recovery plan review.",
     ],
-    businessImpactSummary: `This store could be leaving ${formatUsd(monthlyLeakage)} to ${formatUsd(monthlyOpportunity)} a month on the table across ${leaks.length} issues.`,
+    businessImpactSummary: `This store is on pace to lose ${formatUsd(monthlyLeakage)}–${formatUsd(monthlyOpportunity)} this month alone — and every day these ${leaks.length} issues stay unfixed, that number keeps climbing.`,
   };
 }

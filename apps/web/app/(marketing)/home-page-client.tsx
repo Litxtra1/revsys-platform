@@ -5,10 +5,8 @@ import {
   SectionEyebrow,
   StoreUrlInput,
   CheckDot,
-  SeverityChip,
   ShopifyGlyph,
   useReveal,
-  useCountUp,
 } from "../../components/marketing/shared";
 
 export function HomePageClient() {
@@ -98,15 +96,22 @@ function Hero() {
           </div>
         </div>
 
-        <HeroPreview />
+        <HeroVisual />
       </div>
     </section>
   );
 }
 
-function HeroPreview() {
+const SIGNAL_POSITIONS = [
+  { top: "14%", left: "64%", delay: "0s" },
+  { top: "70%", left: "18%", delay: "0.5s" },
+  { top: "36%", left: "84%", delay: "1s" },
+  { top: "82%", left: "56%", delay: "1.5s" },
+  { top: "22%", left: "22%", delay: "2s" },
+] as const;
+
+function HeroVisual() {
   const { ref, shown } = useReveal<HTMLDivElement>(0.2);
-  const leak = useCountUp(42800, shown, 1800);
   return (
     <div ref={ref} className="relative">
       <div
@@ -127,56 +132,49 @@ function HeroPreview() {
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-4">
             revsys / live scan
           </span>
-          <span className="font-mono text-[10px] tabular-nums text-ink-4">REV-9921</span>
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-growth/60 revsys-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-growth" />
+          </span>
         </div>
 
-        <div className="relative p-6 md:p-8">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-20 revsys-scan-sweep"
-            style={{
-              background:
-                "linear-gradient(to bottom, transparent, color-mix(in oklab, var(--growth) 45%, transparent), transparent)",
-            }}
-          />
-          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-4">
-            Estimated monthly revenue leak
-          </div>
-          <div className="mt-2 flex items-baseline gap-3">
-            <span className="font-display text-[56px] font-semibold leading-none tracking-[-0.04em] text-ink-1 tabular-nums">
-              ${leak.toLocaleString()}
-            </span>
-            <span className="font-mono text-[13px] text-growth">+ growing</span>
-          </div>
-
-          <div className="mt-7 space-y-3">
-            {([
-              { leak: "Checkout shipping delay", sev: "Critical", tone: "critical" },
-              { leak: "Missing product evidence", sev: "High", tone: "warning" },
-              { leak: "Unmet demand · sold-out SKUs", sev: "Medium", tone: "warning" },
-            ] as const).map((row, i) => (
-              <div
-                key={row.leak}
-                className="flex items-center justify-between rounded-xl border border-hairline bg-surface px-4 py-3"
-                style={{ animation: `revsys-fade-up 0.7s ${0.3 + i * 0.15}s both` }}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={"h-1.5 w-1.5 rounded-full " + (row.tone === "critical" ? "bg-critical" : "bg-warning")} />
-                  <span className="text-[13px] font-medium text-ink-1">{row.leak}</span>
-                </div>
-                <SeverityChip tone={row.tone}>{row.sev}</SeverityChip>
-              </div>
+        <div className={"relative flex items-center justify-center py-16 " + (shown ? "revsys-fade-in" : "opacity-0")}>
+          <div className="relative grid h-64 w-64 place-items-center">
+            <span className="absolute inset-0 rounded-full border border-hairline" />
+            <span className="absolute inset-[16%] rounded-full border border-hairline" />
+            <span className="absolute inset-[32%] rounded-full border border-hairline" />
+            <span
+              aria-hidden
+              className="revsys-orbit absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, color-mix(in oklab, var(--growth) 60%, transparent) 20deg, transparent 70deg)",
+                maskImage: "radial-gradient(circle, transparent 47%, black 48%, black 100%)",
+                WebkitMaskImage: "radial-gradient(circle, transparent 47%, black 48%, black 100%)",
+              }}
+            />
+            {SIGNAL_POSITIONS.map((s, i) => (
+              <span
+                key={i}
+                aria-hidden
+                className="revsys-pulse absolute h-2 w-2 rounded-full bg-growth"
+                style={{ top: s.top, left: s.left, animationDelay: s.delay }}
+              />
             ))}
-          </div>
-
-          <div className="mt-6 flex items-center justify-between border-t border-hairline pt-5">
-            <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-              Confidence 94%
+            <span className="relative flex h-4 w-4 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-growth/50 revsys-ping" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-growth" />
             </span>
-            <Link href="/scanner" className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-growth">
-              Open full report →
-            </Link>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between border-t border-hairline px-6 py-4">
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
+            Continuously scanning
+          </span>
+          <Link href="/scanner" className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-growth">
+            See how it works →
+          </Link>
         </div>
       </div>
     </div>
@@ -244,12 +242,12 @@ const PLATFORM = [
     cta: "Model my number",
   },
   {
-    to: "/demo" as const,
+    to: "/case-studies" as const,
     n: "04",
-    name: "Interactive Demo",
-    line: "Step through a real transformation.",
-    body: "Pick a scenario and watch the exact metric that moved — from checkout drop-off to add-to-cart to time-to-insight.",
-    cta: "Try the demo",
+    name: "Case Studies",
+    line: "Real stores. Real outcomes.",
+    body: "See what happened when real merchants found their biggest revenue leak — from checkout drop-off to add-to-cart to time-to-insight.",
+    cta: "Read the case studies",
   },
   {
     to: "/pricing" as const,

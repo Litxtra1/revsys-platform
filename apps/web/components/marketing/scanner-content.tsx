@@ -69,24 +69,26 @@ const SCAN_STEPS = [
 export function ScannerContent({ report }: { report: MockRevenueReport | null }) {
   return (
     <>
-      <PageHero
-        eyebrow="The Revenue Scanner"
-        title={
-          <>
-            A business investigation, <br className="hidden md:block" />
-            not a loading bar.
-          </>
-        }
-        lede="Every scan runs five investigations in parallel — checkout, product, pricing, demand and margin — and translates each finding into recoverable revenue you can act on today."
-        right={
-          <div className="max-w-md">
-            <StoreUrlInput />
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-4">
-              Free · No install · Report in 90 seconds
-            </p>
-          </div>
-        }
-      />
+      {!report ? (
+        <PageHero
+          eyebrow="The Revenue Scanner"
+          title={
+            <>
+              A business investigation, <br className="hidden md:block" />
+              not a loading bar.
+            </>
+          }
+          lede="Every scan runs five investigations in parallel — checkout, product, pricing, demand and margin — and translates each finding into recoverable revenue you can act on today."
+          right={
+            <div className="max-w-md">
+              <StoreUrlInput />
+              <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-4">
+                Free · No install · Report in 90 seconds
+              </p>
+            </div>
+          }
+        />
+      ) : null}
       <ScannerTheater />
       <RevenueReport report={report} />
       <MethodologyStrip />

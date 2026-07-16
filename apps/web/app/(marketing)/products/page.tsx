@@ -114,7 +114,7 @@ export default function ProductsPage() {
 
           <div className="mt-16 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/demo"
+              href="/case-studies"
               className="inline-flex items-center gap-2 rounded-full bg-revenue px-5 py-3 text-[13px] font-semibold text-revenue-foreground hover:brightness-110"
             >
               See the engines in action →

@@ -19,6 +19,47 @@ export function getShopifyConfig(): { clientId: string; clientSecret: string; re
   };
 }
 
+/**
+ * Accepts any domain a merchant might type — a custom domain, a bare
+ * storefront URL, or an actual *.myshopify.com handle — and resolves it to
+ * the handle Shopify OAuth actually requires. Shopify OAuth only ever works
+ * against the *.myshopify.com domain, even for stores running on a custom
+ * domain, and there's no official reverse-lookup API for arbitrary domains.
+ * The practical workaround every third-party Shopify integration uses: fetch
+ * the given domain's homepage and look for the myshopify.com handle that
+ * Shopify's own theme/analytics boilerplate embeds inline on virtually every
+ * storefront. Returns null (not a throw) on any failure — this is a
+ * best-effort convenience, not a guarantee, and callers fall back to asking
+ * for the handle directly.
+ */
+export async function detectShopifyDomain(rawInput: string): Promise<string | null> {
+  const cleaned = rawInput
+    .trim()
+    .toLowerCase()
+    .replace(/^https?:\/\//, "")
+    .replace(/\/.*$/, "");
+  if (!cleaned) return null;
+  if (isValidShopifyDomain(cleaned)) return cleaned;
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(`https://${cleaned}`, {
+      signal: controller.signal,
+      redirect: "follow",
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; RevsysBot/1.0; +https://revsys.ai)" },
+    });
+    clearTimeout(timeout);
+    if (!response.ok) return null;
+
+    const html = await response.text();
+    const match = html.match(/([a-z0-9][a-z0-9-]*\.myshopify\.com)/i);
+    return match ? match[1]!.toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
+
 interface ShopifyTokenResponse {
   access_token: string;
   scope: string;
